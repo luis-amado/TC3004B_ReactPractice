@@ -6,6 +6,10 @@ import Header from './components/Header';
 import List from './components/List';
 import Add from './components/Add';
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ResponsiveAppBar from './components/AppBar';
+import CredentialsSignInPage from './components/Login';
+
 const App = () => {
   const [items, setItems] = useState([
     { id: 1, name: 'item1', price: 1 },
@@ -27,16 +31,29 @@ const App = () => {
     setItems([...items, item]);
   };
 
+  const delItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+
   return (
-    <div className='App'>
-      <Header />
-      <p>{count}</p>
+    <div>
+      <BrowserRouter>
+        <ResponsiveAppBar />
+        <Header />
+        <Routes>
+          <Route path='/' element={<CredentialsSignInPage />} />
+          <Route path='/add' element={<Add addItem={addItem} />} />
+          <Route
+            path='/items'
+            element={<List items={items} ondelete={delItem} />}
+          />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+      {/* <p>{count}</p>
       <Button name='suma' click={sum} />
       <Button name='resta' click={subtract} />
-      <Button name='mensaje' click={() => alert('Hola')} />
-      <Add addItem={addItem} />
-      <List items={items} />
-      <Footer />
+      <Button name='mensaje' click={() => alert('Hola')} /> */}
     </div>
   );
 };

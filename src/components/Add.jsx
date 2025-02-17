@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import Button from './Button';
+import { useNavigate } from 'react-router-dom';
 
 const Add = ({ addItem }) => {
   const [name, setName] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
+
+  const navigate = useNavigate();
+
+  const submit = (e) => {
+    e.preventDefault();
+    addItem({ name, price });
+    setName('');
+    setPrice('');
+    navigate('/items');
+  };
 
   return (
-    <div>
+    <form onSubmit={submit}>
       <input
         type='text'
         onChange={(e) => setName(e.target.value)}
@@ -17,8 +27,8 @@ const Add = ({ addItem }) => {
         onChange={(e) => setPrice(e.target.value)}
         value={price}
       />
-      <Button name='Add' click={() => addItem({ name, price })}></Button>
-    </div>
+      <input type='submit' value='Add' />
+    </form>
   );
 };
 

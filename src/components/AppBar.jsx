@@ -14,10 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Inventory', 'Add Product'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Home', 'Inventory', 'Add Product'];
+const settings = ['Logout'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({ logout }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -32,15 +32,21 @@ function ResponsiveAppBar() {
 
   const handleCloseNavMenu = (e) => {
     setAnchorElNav(null);
-    if (e.target.textContent == pages[0]) {
+    if (e.target.textContent === pages[0]) {
+      navigate('/home');
+    } else if (e.target.textContent === pages[1]) {
       navigate('/items');
-    } else if (e.target.textContent == pages[1]) {
+    } else if (e.target.textContent === pages[2]) {
       navigate('/add');
     }
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
+    if (e.target.textContent === settings[0]) {
+      logout();
+      navigate('/');
+    }
   };
 
   return (
@@ -133,7 +139,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <Avatar alt='Luis Amado' src='/static/images/avatar/2.jpg' />
               </IconButton>
             </Tooltip>
             <Menu

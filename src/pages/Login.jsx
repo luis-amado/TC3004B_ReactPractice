@@ -8,13 +8,13 @@ const Login = ({ login }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const onsubmit = (e) => {
+  const onsubmit = async (e) => {
     e.preventDefault();
     if (!username || !password) {
       alert('Please enter your username and password');
       return;
     }
-    const isLogin = login({ username, password });
+    const isLogin = await login({ username, password });
     if (isLogin) {
       setUsername('');
       setPassword('');

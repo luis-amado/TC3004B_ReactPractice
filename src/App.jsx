@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import List from './pages/List';
 import Add from './components/Add';
 
@@ -10,29 +10,47 @@ import Home from './pages/Home';
 import ConditionalRoute from './components/AuthedRoute';
 
 const App = () => {
-  const [items, setItems] = useState([
-    { id: 1, name: 'item1', price: 1 },
-    { id: 2, name: 'item2', price: 2 },
-    { id: 3, name: 'item3', price: 3 },
-  ]);
-
+  const [items, setItems] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
 
-  const addItem = (item) => {
-    item.id = items.length + 1;
-    setItems([...items, item]);
+  const getItems = async () => {
+    const response = await fetch('http://localhost:8000/items');
+    const data = await response.json();
+    setItems(data);
   };
 
-  const delItem = (id) => {
+  useEffect(() => {
+    if (isLogin) {
+      getItems();
+    }
+  }, [isLogin]);
+
+  const addItem = async (item) => {
+    const response = await fetch('http://localhost:8000/items', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
+    });
+    const data = await response.json();
+    setItems([...items, data.item]);
+  };
+
+  const delItem = async (id) => {
+    await fetch(`http://localhost:8000/items/${id}`, {
+      method: 'DELETE',
+    });
     setItems(items.filter((item) => item.id !== id));
   };
 
-  const login = (user) => {
-    if (user.username === 'luisamado' && user.password === '123') {
-      setIsLogin(true);
-      return true;
-    }
-    return false;
+  const login = async (user) => {
+    const response = await fetch('http://localhost:8000/login/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    });
+    const data = await response.json();
+    setIsLogin(data.isLogin);
+    return data.isLogin;
   };
 
   const logout = () => {

@@ -12,9 +12,14 @@ import ConditionalRoute from './components/AuthedRoute';
 const App = () => {
   const [items, setItems] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
+  const [token, setToken] = useState('');
 
   const getItems = async () => {
-    const response = await fetch('http://localhost:8000/items');
+    const response = await fetch('http://localhost:8000/items', {
+      headers: {
+        Authorization: token,
+      },
+    });
     const data = await response.json();
     setItems(data);
   };
@@ -28,7 +33,7 @@ const App = () => {
   const addItem = async (item) => {
     const response = await fetch('http://localhost:8000/items', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: token },
       body: JSON.stringify(item),
     });
     const data = await response.json();
@@ -38,6 +43,7 @@ const App = () => {
   const delItem = async (id) => {
     await fetch(`http://localhost:8000/items/${id}`, {
       method: 'DELETE',
+      headers: { Authorization: token },
     });
     setItems(items.filter((item) => item.id !== id));
   };
@@ -50,6 +56,7 @@ const App = () => {
     });
     const data = await response.json();
     setIsLogin(data.isLogin);
+    setToken(data.token);
     return data.isLogin;
   };
 

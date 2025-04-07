@@ -16,9 +16,7 @@ const App = () => {
 
   const getItems = async () => {
     const response = await fetch('http://localhost:8000/items', {
-      headers: {
-        Authorization: token,
-      },
+      headers: { Authorization: token },
     });
     const data = await response.json();
     setItems(data);

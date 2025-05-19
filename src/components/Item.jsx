@@ -1,17 +1,18 @@
 import React from 'react';
 import Button from './Button';
+import { Link } from 'react-router-dom';
 
 const Item = ({ item, ondelete }) => {
   return (
-    <div>
-      <ul>
-        <li>{item.name}</li>
-        <li>{item.price}</li>
-        <li>
-          <Button name='X' click={() => ondelete(item.id)} />
-        </li>
-      </ul>
-    </div>
+    <tr>
+      <td>
+        <Link to={`/items/${item.id}?q=react55`}>{item.name}</Link>
+      </td>
+      <td>{item.price}</td>
+      <td>
+        <Button name='X' click={() => ondelete(item.id)} />
+      </td>
+    </tr>
   );
 };
 

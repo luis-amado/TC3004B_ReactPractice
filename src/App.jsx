@@ -8,6 +8,7 @@ import ResponsiveAppBar from './components/AppBar';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import ConditionalRoute from './components/AuthedRoute';
+import ItemInfo from './components/ItemInfo';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
@@ -79,6 +80,7 @@ const App = () => {
               path='/items'
               element={<List items={items} ondelete={delItem} />}
             />
+            <Route path='/items/:id' element={<ItemInfo items={items} />} />
           </Route>
           <Route />
         </Routes>
